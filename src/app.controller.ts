@@ -14,7 +14,7 @@ export class AppController {
   @Post("/s3_download_test")
   async s3DownloadTest(@Body() data: { user_id: number }) {
 
-    const tmp = await this.uploader.getPreSignedURLToViewObject('key-switch-dev', `profile_image/${data.user_id}.png`)
+    const tmp = await this.uploader.getPreSignedURLToViewObject(process.env.S3_BUCKET_NAME, `profile_image/${data.user_id}.png`)
 
     // get data from s3
     const data_downloded = await fetch(tmp);
@@ -29,7 +29,7 @@ export class AppController {
 
   @Post("/s3_upload_test")
   async s3UploadTest(@Body() data: { user_id: number, profile_photo_in_base64: string }) {
-    const tmp = await this.uploader.uploadFileToS3('key-switch-dev', `profile_image/${data.user_id}.png`, data.profile_photo_in_base64)
+    const tmp = await this.uploader.uploadFileToS3(process.env.S3_BUCKET_NAME, `profile_image/${data.user_id}.png`, data.profile_photo_in_base64)
     // get url of uploaded photoo
     //const photo_url = tmp.Location;
     return "ok";
